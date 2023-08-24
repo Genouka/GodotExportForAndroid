@@ -1,0 +1,2 @@
+# GodotExportForAndroid
+Android版本Godot使用Github CI导出的方案
