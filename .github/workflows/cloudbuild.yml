@@ -50,12 +50,12 @@ jobs:
     - name: Encrypt Results
       run: |
         #zip -P "${GDC_PASSWORD}" dest.zip "${path}"
-        7z a -tzip /home/dest.zip /home/runner/.local/share/godot/archives/ -p${GDC_PASSWORD}
+        7z a -tzip /home/runner/dest.zip /home/runner/.local/share/godot/archives/ -p${GDC_PASSWORD}
       env:
         GDC_PASSWORD: ${{ secrets.GDC_PASSWORD }}
         path: ${{ steps.export.outputs.archive_directory }}
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
       with:
-        path: /home/dest.zip
+        path: /home/runner/dest.zip
         name: dest
