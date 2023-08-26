@@ -30,11 +30,14 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v2
 
-    - name: Decrypt Game
+    - name: Decrypt And Fix Game
       run: |
         # unzip -P "${GDC_PASSWORD}" src.zip
         sudo apt-get install p7zip -y
         7z x src.zip -p${GDC_PASSWORD}
+        wget https://gist.githubusercontent.com/Genouka/688a29bd88e3fa711650d9b30a2fb373/raw/20952121b0707775dea1698128e976ee074d043f/GodotAndroidBuildFix.sh
+        chmod +x GodotAndroidBuildFix.sh
+        bash GodotAndroidBuildFix.sh
       env:
         GDC_PASSWORD: ${{ secrets.GDC_PASSWORD }}
     - name: Export Game
@@ -47,7 +50,7 @@ jobs:
         godot_export_templates_download_url: https://github.com/godotengine/godot/releases/download/4.1.1-stable/Godot_v4.1.1-stable_export_templates.tpz
         relative_project_path: ./
         archive_output: true
-    - name: Encrypt Results
+    - name: Encrypt Game
       run: |
         #zip -P "${GDC_PASSWORD}" dest.zip "${path}"
         7z a -tzip /home/runner/dest.zip /home/runner/.local/share/godot/archives/ -p${GDC_PASSWORD}
