@@ -32,7 +32,9 @@ jobs:
 
     - name: Decrypt Game
       run: |
-        unzip -P "${GDC_PASSWORD}" src.zip
+        # unzip -P "${GDC_PASSWORD}" src.zip
+        apt install p7zip -y
+        7z x src.zip -p${GDC_PASSWORD}
       env:
         GDC_PASSWORD: ${{ secrets.GDC_PASSWORD }}
     - name: Export Game
