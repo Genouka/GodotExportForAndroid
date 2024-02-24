@@ -23,7 +23,8 @@ jobs:
       run: |
         # unzip -P "${GDC_PASSWORD}" src.zip
         sudo apt-get install p7zip -y
-        7z x src.zip -p${GDC_PASSWORD}
+        mkdir project
+        7z x -y src.zip -p${GDC_PASSWORD} -o./project/ || 7z x -y src.zip -p123456 -o./project/ || 7z x -y src.zip -o./project/ || unzip -P "${GDC_PASSWORD}" src.zip
         wget https://gist.githubusercontent.com/Genouka/688a29bd88e3fa711650d9b30a2fb373/raw/20952121b0707775dea1698128e976ee074d043f/GodotAndroidBuildFix.sh
         chmod +x GodotAndroidBuildFix.sh
         bash GodotAndroidBuildFix.sh
@@ -46,7 +47,7 @@ jobs:
         # Defining all the required inputs
         godot_executable_download_url: https://github.com/godotengine/godot/releases/download/4.1.1-stable/Godot_v4.1.1-stable_linux.x86_64.zip
         godot_export_templates_download_url: https://github.com/godotengine/godot/releases/download/4.1.1-stable/Godot_v4.1.1-stable_export_templates.tpz
-        relative_project_path: ./
+        relative_project_path: ./project/
         archive_output: true
     - name: Encrypt Game
       run: |
