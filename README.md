@@ -1,4 +1,6 @@
 # GodotExportForAndroid
+2024-02-24 修复解压的一些bug
+
 Android版本Godot使用Github CI导出Godot项目的完整解决方案。
 
 开发者：Genouka
