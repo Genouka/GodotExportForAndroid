@@ -9,6 +9,7 @@ Android版本Godot使用Github CI导出Godot项目的完整解决方案。
 
 > [!NOTE]
 > 你可以直接使用GodotHelper（在qq群517549773中小范围测试）完成这些操作。但其是闭源软件哦。（开发者：Genouka）
+>
 > 也可以试试支持在手机上离线导出的[Godot导出助手（闭源软件）](https://gdh.genouka.rr.nu/)
 
 Bilibili:Genouka
