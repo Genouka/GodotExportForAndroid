@@ -1,11 +1,15 @@
 # GodotExportForAndroid
+2024-07-06 更改一些文字说明
+
 2024-04-26 修正一些文字说明
+
 2024-02-24 修复解压的一些bug
 
 Android版本Godot使用Github CI导出Godot项目的完整解决方案。
 
 > [!NOTE]
-> 你可以直接使用GodotHelper完成这些操作。但其是闭源软件哦。（开发者：Genouka）
+> 你可以直接使用GodotHelper（在qq群517549773中小范围测试）完成这些操作。但其是闭源软件哦。（开发者：Genouka）
+> 也可以试试支持在手机上离线导出的[Godot导出助手（闭源软件）](https://gdh.genouka.rr.nu/)
 
 Bilibili:Genouka
 
@@ -42,7 +46,8 @@ Bilibili:Genouka
 内容填你之后要设置的src.zip文件的密码（这个密码也是你取回时候用的密码）
 
 > [!WARNING]
-> 密码千万不要带空格！
+> 已知问题：密码不可以带空格和shell脚本关键字符号，否则会导致导出出现错误！
+> 如果你不知道该怎么做，让密码只包含数字和大小写字母就行了。
 
 记得点保存！
 
@@ -53,7 +58,7 @@ Bilibili:Genouka
 修改`export_presets.cfg`。
 
 > [!TIP]
-> 也可以直接在Godot内修改导出配置哦。
+> 建议直接在Godot内修改导出配置哦，会自动在项目路径下生成该文件。
 
 添加几个平台配置就会相应导出几个，记得要填导出的文件名（建议不要填绝对路径，填`./output.apk`，其他的未经过测试）。
 
@@ -410,7 +415,12 @@ Remove-Item -Recurse -Force '{temp_dir}'"
 
 #### 5.2.上传
 
-上传的文件名为src.zip，放仓库main分支根目录就行了。
+带密码压缩你的整个项目。
+
+> [!WARNING]
+> 已知问题：如果你的项目包含LICENSE或README.md文件，请删除或重命名它们再上传，否则运行Action时会出现覆盖失败的问题。
+
+上传的文件名为`src.zip`，放仓库main分支根目录就行了。
 
 如果仓库已经有这个文件请先删了。
 
